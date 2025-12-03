@@ -1,4 +1,4 @@
-package uno_proto
+package uno_proto.common
 
 import java.io.Serializable
 

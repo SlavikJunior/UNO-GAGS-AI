@@ -1,4 +1,4 @@
-package uno_proto
+package uno_proto.common
 
 data class NetworkMessage(
     val id: Long, // id-шник сообщения
