@@ -4,20 +4,13 @@ data class CreateRoomRequest(
     val roomName: String,
     val password: String? = null,
     val maxPlayers: Int = 4,
-    val rules: GameRules = GameRules()
+    val allowStuck: Boolean = false
 )
 
 data class CreateRoomResponse(
     val roomId: Long,
     val roomName: String,
     val isSuccessful: Boolean
-)
-
-data class GameRules(
-    val allowStackingPlusTwo: Boolean = false,
-    val allowStackingPlusFour: Boolean = false,
-    val sevenZeroRule: Boolean = false,
-    val jumpInRule: Boolean = false
 )
 
 data class JoinRoomRequest(
