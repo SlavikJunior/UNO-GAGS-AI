@@ -1,5 +1,7 @@
 package uno_server.common;
 
+import uno_server.protocol.MessageRouter;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -25,6 +27,7 @@ public class Server implements Closeable {
     private final List<Connection> connections = new CopyOnWriteArrayList<>();
     private final AtomicInteger index = new AtomicInteger(0);
     private volatile boolean running = false;
+    private final MessageRouter messageRouter;
 
     /**
      * Создаёт сервер и подготавливает сокет на стандартном порту 9090.
@@ -39,6 +42,7 @@ public class Server implements Closeable {
      * @param port порт для прослушивания
      */
     public Server(int port) {
+        this.messageRouter = new MessageRouter();
         try {
             serverSocket = new ServerSocket(port);
             serverSocket.setReuseAddress(true);
@@ -84,6 +88,7 @@ public class Server implements Closeable {
 
     /**
      * Обрабатывает конкретного клиента в отдельном потоке.
+     * Каждая полученная строка JSON парсится и маршрутизируется через MessageRouter.
      *
      * @param connection подключение клиента
      * @param clientId   номер клиента для логирования
@@ -93,11 +98,15 @@ public class Server implements Closeable {
             String line;
             while ((line = connection.readLine()) != null) {
                 logger.log(Level.INFO, "Message from client #" + clientId + ": " + line);
+                // Route the message through the message router
+                messageRouter.routeMessage(connection, line);
             }
         } catch (IOException e) {
             logger.log(Level.WARNING, "Client #" + clientId + " communication error", e);
         } finally {
             connections.remove(connection);
+            // Notify router of disconnection
+            messageRouter.handleDisconnect(connection);
             connection.close();
             logger.log(Level.INFO, "Client #" + clientId + " disconnected");
         }
