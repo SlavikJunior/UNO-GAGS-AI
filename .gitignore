@@ -39,3 +39,7 @@ build/
 
 .idea
 UNO-PROTO/notice.txt
+
+# Test/log files
+server_test.log
+cp.txt

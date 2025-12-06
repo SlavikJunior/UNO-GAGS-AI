@@ -9,11 +9,59 @@
 ### Если что то случилось гитом и всё полетело, сразу сообщаем друг другу и решаем вместе
 
 # Коротко о структуре:
-#### UNO-CLIENT - модуль клиента
+#### UNO-CLIENT - модуль клиента (JavaFX UI в uno_ui пакете)
 #### UNO-SERVER - модуль сервера
 #### UNO-PROTO - модуль протокола
 
 #### Запусти код в Playground для проверки как работает вообще всё
+
+## Running the JavaFX UI Client
+
+The project now includes a simple JavaFX graphical client that connects to the UNO server.
+
+### Prerequisites
+
+1. Make sure the server is running first:
+```bash
+mvn compile
+java -cp target/classes uno_server.ServerLauncher
+```
+
+2. In a separate terminal, launch the UI client:
+```bash
+mvn exec:java -Dexec.mainClass=uno_ui.MainApp
+```
+
+### Using the UI
+
+The client window provides:
+- **Status bar** - Shows connection status, room info, and current game state
+- **Room controls** - Buttons to create room, join room, or get room list
+- **Current card display** - Shows the card currently on the table
+- **Your hand** - Displays your cards as clickable buttons (placeholder cards shown initially)
+- **Action buttons**:
+  - **Play Selected Card** - Plays the card you've selected
+  - **Draw Card** - Draws a card from the deck
+  - **Say UNO!** - Declares UNO when you have one card left
+  - **Start Game** - Starts the game (only works if you're the room creator)
+- **Chat area** - Shows chat messages and allows you to send messages
+
+### Typical Workflow
+
+1. Start the server in one terminal
+2. Launch one or more UI clients
+3. In the first client, click "Create Room" and enter a room name
+4. In other clients, click "Join Room" and enter the room ID (usually 1)
+5. In the room creator's client, click "Start Game"
+6. Players take turns clicking cards to play them or clicking "Draw Card"
+7. When you have one card left, click "Say UNO!"
+
+### Technical Notes
+
+- The UI uses a background thread for network communication to avoid blocking
+- All server messages are logged to console for debugging
+- The client uses the same JSON protocol and DTOs as the server
+- Error messages from the server are logged but not yet displayed in UI (can be enhanced)
 
 ## Wire Protocol Testing
 
