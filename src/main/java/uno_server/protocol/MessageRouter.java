@@ -275,7 +275,7 @@ public class MessageRouter {
                     broadcastLobbyUpdate(roomId);
                 }
 
-                sendMessage(connection, Method.OK, new MessageParser.EmptyPayload());
+                sendMessage(connection, Method.OK, MessageParser.EmptyPayload.INSTANCE);
                 logger.log(Level.INFO, "User " + userId + " left room " + roomId);
             }
         } catch (Exception e) {
@@ -448,7 +448,7 @@ public class MessageRouter {
      * Responds with PONG.
      */
     private void handlePing(Connection connection, NetworkMessage message) {
-        sendMessage(connection, Method.PONG, new MessageParser.EmptyPayload());
+        sendMessage(connection, Method.PONG, MessageParser.EmptyPayload.INSTANCE);
     }
 
     /**

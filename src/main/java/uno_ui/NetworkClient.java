@@ -1,7 +1,6 @@
 package uno_ui;
 
 import uno_proto.common.*;
-import uno_proto.dto.*;
 import uno_server.protocol.MessageParser;
 
 import java.io.*;

@@ -111,14 +111,15 @@ public class GameController {
      * Requests list of available rooms from server.
      */
     public void getRooms() {
-        networkClient.sendMessage(Method.GET_ROOMS, new MessageParser.EmptyPayload());
+
+        networkClient.sendMessage(Method.GET_ROOMS, MessageParser.EmptyPayload.INSTANCE);
     }
     
     /**
      * Starts the game (only works if you're the room creator).
      */
     public void startGame() {
-        networkClient.sendMessage(Method.START_GAME, new MessageParser.EmptyPayload());
+        networkClient.sendMessage(Method.START_GAME, MessageParser.EmptyPayload.INSTANCE);
     }
     
     /**
@@ -140,14 +141,14 @@ public class GameController {
      * Draws a card from the deck.
      */
     public void drawCard() {
-        networkClient.sendMessage(Method.DRAW_CARD, new MessageParser.EmptyPayload());
+        networkClient.sendMessage(Method.DRAW_CARD, MessageParser.EmptyPayload.INSTANCE);
     }
     
     /**
      * Declares UNO (when you have one card left).
      */
     public void sayUno() {
-        networkClient.sendMessage(Method.SAY_UNO, new MessageParser.EmptyPayload());
+        networkClient.sendMessage(Method.SAY_UNO, MessageParser.EmptyPayload.INSTANCE);
     }
     
     /**
