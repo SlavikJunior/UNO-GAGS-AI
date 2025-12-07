@@ -1,6 +1,5 @@
 package uno_server.game;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -36,65 +35,16 @@ public class GameSessionManager {
         
         return session;
     }
-    
-    /**
-     * Gets an existing game session by room ID.
-     * 
-     * @param roomId The room ID
-     * @return The GameSession, or null if not found
-     */
-    public GameSession getSession(long roomId) {
-        return activeSessions.get(roomId);
-    }
-    
+
     /**
      * Removes and ends a game session.
-     * 
+     *
      * @param roomId The room ID
-     * @return The removed GameSession, or null if not found
      */
-    public GameSession removeSession(long roomId) {
-        return activeSessions.remove(roomId);
+    public void removeSession(long roomId) {
+        activeSessions.remove(roomId);
     }
-    
-    /**
-     * Checks if a session exists for the given room.
-     * 
-     * @param roomId The room ID
-     * @return true if session exists, false otherwise
-     */
-    public boolean hasSession(long roomId) {
-        return activeSessions.containsKey(roomId);
-    }
-    
-    /**
-     * Gets all active sessions.
-     * 
-     * @return A map of room ID to GameSession
-     */
-    public Map<Long, GameSession> getAllSessions() {
-        return new HashMap<>(activeSessions);
-    }
-    
-    /**
-     * Starts a game session.
-     * This is a convenience method that delegates to the GameSession.
-     * 
-     * @param roomId The room ID
-     * @return The current game state
-     * @throws IllegalArgumentException if session not found
-     */
-    public uno_proto.dto.GameState startGame(long roomId) {
-        GameSession session = activeSessions.get(roomId);
-        if (session == null) {
-            throw new IllegalArgumentException("No game session found for room: " + roomId);
-        }
-        
-        // The game is already started when the session is created
-        // This method is mainly for API consistency
-        return session.getGameState();
-    }
-    
+
     /**
      * Plays a card in the specified game session.
      * 
@@ -149,56 +99,5 @@ public class GameSessionManager {
         
         session.sayUno(playerId);
         return session.getGameState();
-    }
-    
-    /**
-     * Sets the chosen color after playing a wild card.
-     * 
-     * @param roomId The room ID
-     * @param playerId The player who played the wild card
-     * @param color The chosen color
-     * @return The updated game state
-     * @throws IllegalArgumentException if session not found
-     */
-    public uno_proto.dto.GameState setChosenColor(long roomId, long playerId, uno_proto.dto.CardColor color) {
-        GameSession session = activeSessions.get(roomId);
-        if (session == null) {
-            throw new IllegalArgumentException("No game session found for room: " + roomId);
-        }
-        
-        session.setChosenColor(color);
-        return session.getGameState();
-    }
-    
-    /**
-     * Gets the current game state for a room.
-     * 
-     * @param roomId The room ID
-     * @return The current game state
-     * @throws IllegalArgumentException if session not found
-     */
-    public uno_proto.dto.GameState getGameState(long roomId) {
-        GameSession session = activeSessions.get(roomId);
-        if (session == null) {
-            throw new IllegalArgumentException("No game session found for room: " + roomId);
-        }
-        
-        return session.getGameState();
-    }
-    
-    /**
-     * Calculates and returns scores for a finished game.
-     * 
-     * @param roomId The room ID
-     * @return Map of player ID to score
-     * @throws IllegalArgumentException if session not found
-     */
-    public java.util.Map<Long, Integer> calculateScores(long roomId) {
-        GameSession session = activeSessions.get(roomId);
-        if (session == null) {
-            throw new IllegalArgumentException("No game session found for room: " + roomId);
-        }
-        
-        return session.calculateScores();
     }
 }
